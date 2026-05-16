@@ -150,6 +150,7 @@ h3 {
     font-size: 20px;
     margin-bottom: 0%;
     margin-left:8vw;
+    margin-top: 0;
 }
 
 .AboutText {
@@ -160,7 +161,7 @@ h3 {
     text-align: center;
     position: relative;
     overflow: hidden;
-    height: 560px;
+    height: 400px;
 }
 
 .Picture {
@@ -207,6 +208,8 @@ h3 {
   gap: 1vw;
   padding: 1vw;
   margin: 1vw;
+  margin-top: 0;
+  padding-top: 0;  
 }
 
 .work-item {

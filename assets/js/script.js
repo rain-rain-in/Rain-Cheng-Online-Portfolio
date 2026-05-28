@@ -1,15 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ==========================================================================
-  // 1. HEADER BACKGROUND TRANSITION ON SCROLL
+  // 1. HEADER BACKGROUND TRANSITION ON SCROLL (Dynamic Viewport Update)
   // ==========================================================================
   const header = document.querySelector(".Header");
   const aboutSection = document.querySelector("#About");
   
   if (header && aboutSection) {
-    const triggerPoint = aboutSection.offsetTop;
-
     window.addEventListener("scroll", () => {
-      if (window.scrollY >= triggerPoint - 50) {
+      // Gets the current dynamic distance from the top of the viewport to the #About section
+      const sectionTop = aboutSection.getBoundingClientRect().top;
+
+      // If the section top crosses or gets close to the header threshold (e.g., 50px)
+      if (sectionTop <= 50) {
         header.style.backgroundColor = "rgba(0, 0, 0, 1)";
       } else {
         header.style.backgroundColor = "rgba(0, 0, 0, 0)";
@@ -18,15 +20,41 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ==========================================================================
-  // 2. INTERACTIVE IMAGE SWAP (ABOUT SECTION) - DESKTOP & MOBILE COMPATIBLE
+  // 2. MOBILE MENU TOGGLE (THREE DOTS)
+  // ==========================================================================
+  const menuBtn = document.querySelector(".menu-dots");
+  const navMenu = document.querySelector("nav");
+
+  if (menuBtn && navMenu) {
+    // Toggle menu visibility when clicking the dots icon target
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); // Stops the event from instantly triggering the blanket document click closer
+      navMenu.classList.toggle("open");
+    });
+
+    // Automatically close the menu overlay when an individual nav link inside it gets tapped
+    navMenu.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", () => {
+        navMenu.classList.remove("open");
+      });
+    });
+
+    // Close the dropdown menu automatically if the user clicks anywhere else out on the screen canvas
+    document.addEventListener("click", () => {
+      navMenu.classList.remove("open");
+    });
+  }
+
+  // ==========================================================================
+  // 3. INTERACTIVE IMAGE SWAP (ABOUT SECTION) - DESKTOP & MOBILE COMPATIBLE
   // ==========================================================================
   const triggers = document.querySelectorAll(".hover-trigger");
   const image = document.querySelector(".Picture");
 
   triggers.forEach(trigger => {
-    // Desktop Pointer Events
+    // Desktop Pointer Hover Events
     trigger.addEventListener("mouseenter", () => {
-      if (window.innerWidth > 768) { // Only track if screen size is desktop
+      if (window.innerWidth > 768) { // Only track if screen size matches desktop layouts
         const newSrc = trigger.getAttribute("data-image");
         if (newSrc && image) {
           image.src = newSrc;
@@ -42,7 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // Mobile Touch/Tap Events
+    // Mobile Touch/Tap Activation Interface Elements
     trigger.addEventListener("click", (e) => {
       if (window.innerWidth <= 768) {
         e.preventDefault();
@@ -50,13 +78,13 @@ document.addEventListener("DOMContentLoaded", () => {
         
         if (!newSrc || !image) return;
 
-        // If user taps an already active link, reset it
+        // If user taps an already active link, reset its visibility trace
         if (trigger.classList.contains("active-touch")) {
           trigger.classList.remove("active-touch");
           image.style.opacity = "0";
           setTimeout(() => { image.src = ""; }, 300);
         } else {
-          // Clear previous active states from other triggers
+          // Clear previous active states from alternative option triggers
           triggers.forEach(t => t.classList.remove("active-touch"));
           
           trigger.classList.add("active-touch");
@@ -68,7 +96,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==========================================================================
-  // 3. MODAL CORE LOGIC (OPEN & CLOSE)
+  // 4. MODAL CORE LOGIC (OPEN & CLOSE)
   // ==========================================================================
   const workItems = document.querySelectorAll(".work-item");
   const modals = document.querySelectorAll(".modal");
@@ -78,6 +106,7 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "none";
     document.body.style.overflow = "";
 
+    // Hard reset iframe configurations to slice playing media instantly
     const iframe = modal.querySelector("iframe");
     if (iframe) {
       iframe.src = "";
@@ -130,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ==========================================================================
-  // 4. CAROUSELS
+  // 5. CAROUSELS
   // ==========================================================================
   function scrollCarousel(modal, direction) {
     const track = modal.querySelector(".carousel-track");
@@ -167,7 +196,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (leftArrow) {
       leftArrow.addEventListener("click", (e) => {
-        e.stopPropagation(); // Avoid triggering dark background click events
+        e.stopPropagation(); // Avoid triggering dark backdrop click closures unexpectedly
         scrollCarousel(modal, -1);
       });
     }

@@ -429,6 +429,10 @@ footer {
   .About {
     grid-template-columns: 1fr; /* Stack about section text and picture on top of each other */
     gap: 30px;
+    grid-template-columns: 1fr;
+    gap: 30px;
+    padding: 6vh 5vw; /* Slightly more vertical spacing for mobile thumb scrolling */
+    background-color: #fffcf0; /* Re-verify the solid layer color */
   }
   
   h3 {

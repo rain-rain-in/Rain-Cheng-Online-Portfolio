@@ -122,10 +122,9 @@ nav a {
 #video {
   position: relative;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
+  height: 100vh;  /* Fallback for older browsers */
+  height: 100dvh; /* Full screen height on mobile, accounting for browser bars */
   overflow: hidden;
-  z-index: 1;  
 }
 
 .background-video {
@@ -135,9 +134,7 @@ nav a {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  z-index: 1;
   pointer-events: none;
-  z-index: -1;
 }
 
 /* ==========================================================================
@@ -147,11 +144,8 @@ nav a {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
-  padding: 4vh 5vw;
-  position: relative;
-  z-index: 2;
-  margin-top: 8vh;
-  background-color: #fffcf0;
+  padding: 8vh 5vw;          /* Vertical padding to give text breathing room */
+  background-color: #fffcf0; /* Solid background matches the body */
 }
 
 h3 {
@@ -427,12 +421,9 @@ footer {
   }
 
   .About {
-    grid-template-columns: 1fr; /* Stack about section text and picture on top of each other */
+    grid-template-columns: 1fr; /* Stacks image and text vertically */
     gap: 30px;
-    grid-template-columns: 1fr;
-    gap: 30px;
-    padding: 6vh 5vw; /* Slightly more vertical spacing for mobile thumb scrolling */
-    background-color: #fffcf0; /* Re-verify the solid layer color */
+    padding: 6vh 5vw;
   }
   
   h3 {
@@ -440,17 +431,14 @@ footer {
   }
 
   .AboutPicture {
-    height: auto; /* Let picture heights find their true bounds naturally */
-    order: -1;    /* Places visual picture block BEFORE text for better layout context */
+    height: auto;
+    order: -1;
   }
 
   .Picture {
     position: relative;
-    transform: none;
-    left: 0;
-    max-width: 100%;
     width: 260px;
-    opacity: 1; /* Retains visible status permanently on screens that don't support hover maps */
+    opacity: 1;
   }
 
   .Work {

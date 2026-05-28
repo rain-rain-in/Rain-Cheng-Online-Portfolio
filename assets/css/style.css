@@ -147,8 +147,11 @@ nav a {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 40px;
-  padding: 0 5vw;
+  padding: 4vh 5vw;
+  position: relative;
+  z-index: 2;
   margin-top: 8vh;
+  background-color: #fffcf0;
 }
 
 h3 {

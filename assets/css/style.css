@@ -117,29 +117,38 @@ nav a {
 }
 
 /* ==========================================================================
-   4. HERO VIDEO SECTION
+   4. HERO VIDEO SECTION (UPDATED FOR FAIL-SAFE FLOW)
    ========================================================================== */
 #video {
   position: relative;
   width: 100%;
-  height: 100vh;  /* Fallback for older browsers */
-  height: 100dvh; /* Full screen height on mobile, accounting for browser bars */
+  height: 100vh;  
+  height: 100dvh; 
   overflow: hidden;
+  background-color: #000; /* Clean backdrop while video loads */
 }
 
 .background-video {
-  position: absolute;
-  top: 0;
-  left: 0;
+  /* FIXED: Changed to block display with independent viewport structural bounds. 
+     This physically pushes down subsequent sections regardless of container ID errors. */
+  display: block;
   width: 100%;
-  height: 100%;
+  height: 100vh;  
+  height: 100dvh; 
   object-fit: cover;
   pointer-events: none;
 }
 
 /* ==========================================================================
-   5. ABOUT SECTION
+   5. ABOUT SECTION (UPDATED STACKING PROTECTION)
    ========================================================================== */
+#About, .About {
+  /* FIXED: Explicit stacking context safety net guarantees 
+     text layers sit purely on top of background documents. */
+  position: relative;
+  z-index: 2;
+}
+
 .About {
   display: grid;
   grid-template-columns: repeat(2, 1fr);

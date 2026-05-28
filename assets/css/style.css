@@ -25,7 +25,6 @@
   font-display: swap;
 } 
 
-/* System Font Stacks */
 :root {
   --system-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
@@ -36,7 +35,7 @@
 html {
   scroll-behavior: smooth;
   overscroll-behavior: auto;
-  scroll-padding-top: 10vh; /* Prevents sticky header from covering titles */
+  scroll-padding-top: 10vh;
 }
 
 body {
@@ -44,10 +43,12 @@ body {
   padding: 0;
   background-color: #fffcf0;
   font-family: var(--system-sans);
+  /* Prevents horizontal scroll breaking on mobile due to vw sizing definitions */
+  overflow-x: hidden; 
 }
 
 section {
-  margin-bottom: 1vh;
+  margin-bottom: 4vh; /* Increased for breathing room on mobile scrolls */
   margin-top: 0;
 }
 
@@ -59,31 +60,24 @@ section {
   justify-content: space-between;
   align-items: center;
   background-color: rgba(0, 0, 0, 0);
-  opacity: 1;
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
+  width: 100%; /* Swapped 100vw out for 100% to fix mobile scrollbars */
   height: 8vh;
-  z-index: 10;
+  z-index: 100;
   padding: 0 5vw;
+  box-sizing: border-box;
   transition: background-color 0.3s ease;
-}
-
-.HeaderLogo {
-  text-align: left;
-}
-
-.HeaderNav {
-  text-align: right;
 }
 
 h1 {
   font-family: 'AppleGaramond', serif;
-  font-size: 30px;
+  font-size: 24px; /* Slightly downscaled for mobile layouts */
   color: white;
   margin: 0;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .logo {
@@ -93,15 +87,20 @@ h1 {
 
 nav { 
   font-family: 'AgrandirGrandHeavy', var(--system-sans);
-  font-size: 16px;
+  font-size: 14px; /* Scaled down slightly */
   color: white;
-  margin: 3vh 3vw;
 }
 
 nav ul {
   list-style: none;
   margin: 0;
   padding: 0;
+  display: flex;
+}
+
+nav li {
+  margin-left: 4vw; /* Uses left margins to perfectly align space against the right wall */
+  cursor: pointer;
 }
 
 nav a {
@@ -109,15 +108,11 @@ nav a {
   color: white;
 }
 
-nav a:hover {
-  opacity: 0.6;
-}
-
-nav li {
-  display: inline-block;
-  margin-right: 5vw;
-  cursor: pointer;
-  vertical-align: middle;
+/* Desktop-Only Hover */
+@media (hover: hover) {
+  nav a:hover {
+    opacity: 0.6;
+  }
 }
 
 /* ==========================================================================
@@ -131,15 +126,13 @@ nav li {
 }
 
 .background-video {
+  position: absolute;
   top: 0;
-  left: 0; 
-  position: relative;
-  width: 100vw;
-  height: auto;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   z-index: 1;
-  overflow: hidden;
-  display: block;
 }
 
 /* ==========================================================================
@@ -148,16 +141,15 @@ nav li {
 .About {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-left: 1vw;
-  margin-top: 4vh;
+  gap: 40px;
+  padding: 0 5vw;
+  margin-top: 8vh;
 }
 
 h3 {
   font-family: 'AgrandirGrandHeavy', var(--system-sans);
-  font-size: 20px;
-  margin-bottom: 0;
-  margin-left: 8vw;
+  font-size: 24px;
+  margin-bottom: 20px;
   margin-top: 0;
 }
 
@@ -170,34 +162,43 @@ h3 {
   position: relative;
   overflow: hidden;
   height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 }
 
 .Picture {
-  position: absolute;
-  top: 0;
-  transform: translateX(-50%);
   width: 280px;
   height: auto;
   object-fit: cover;
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .hover-trigger {
   text-decoration: underline;
   font-weight: bold;
   cursor: pointer;
-  transition: color 0.3s ease, filter 0.3s ease;
+  transition: color 0.3s ease, opacity 0.3s ease;
 }
 
-.hover-trigger:hover {
+/* Desktop Hover Interaction Styles */
+@media (hover: hover) {
+  .hover-trigger:hover {
+    color: #d93025;
+    opacity: 0.7;
+  }
+}
+
+/* Mobile Active Touch State Style */
+.hover-trigger.active-touch {
   color: #d93025;
-  filter: blur(1px);
 }
 
 .aboutP {
   font-family: 'SansSerifBookFLF', var(--system-sans);
   font-size: 18px;
-  line-height: 1.1;
-  margin-left: 5vw;
+  line-height: 1.4; /* Expanded line height for readability on mobile phone devices */
   text-align: left;
 }
 
@@ -207,10 +208,9 @@ h3 {
 .Work {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1vw;
-  padding: 1vw;
-  margin: 1vw 1vw 0 1vw;
-  padding-top: 0;  
+  gap: 1.5vw;
+  padding: 0 5vw;
+  margin-top: 4vh;
 }
 
 .work-item {
@@ -221,23 +221,24 @@ h3 {
 .work-image {
   width: 100%;
   height: auto;
-  max-width: 840px;
   object-fit: cover;
   cursor: pointer;
+  display: block;
 }
 
-.work-item:hover {
-  transform: scale(0.95);
-}
-
-.work-item:hover .caption {
-  opacity: 0.7; /* Changed from blur for improved readability */
-  transition: opacity 0.3s ease;
+@media (hover: hover) {
+  .work-item:hover {
+    transform: scale(0.97);
+  }
+  .work-item:hover .caption {
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
 }
 
 .caption {
   font-family: 'SansSerifFLF-Demibold', var(--system-sans);
-  font-size: 16px;
+  font-size: 15px;
   margin-top: 10px;
   cursor: pointer;
 }
@@ -250,28 +251,29 @@ h3 {
   position: fixed;
   z-index: 1000;
   top: 0; left: 0;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.9);
   justify-content: center;
   align-items: center;
+  overflow-y: auto; /* Allow scrolling if the modal exceeds viewport height */
 }
 
 .modal-content {
   background: white;
-  padding: 5vh 5vw;
+  padding: 30px;
   border-radius: 8px;
-  max-width: 1200px;
-  max-height: 80vh;
+  max-width: 1100px;
   width: 90%;
-  margin: 5vh 5vw;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  margin: 40px auto;
 }
 
 .modal-grid {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2.5fr 1fr;
   gap: 25px;
   align-items: start;
 }
@@ -279,7 +281,7 @@ h3 {
 .modal-video { 
   position: relative; 
   width: 100%; 
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */ 
+  padding-top: 56.25%; 
   overflow: hidden; 
 }
 
@@ -293,18 +295,18 @@ h3 {
 .modal-text {
   max-height: 60vh;
   overflow-y: auto;
-  padding-right: 1vw;
 }
 
 .modal-text h4 {
   font-family: 'SansSerifFLF-Demibold', var(--system-sans);
   font-size: 22px;
+  margin-top: 0;
   margin-bottom: 10px;
 }
 
 .modal-description {
   font-family: 'SansSerifBookFLF', var(--system-sans);
-  font-size: 16px;
+  font-size: 15px;
   line-height: 1.5;
 }
 
@@ -315,16 +317,15 @@ h3 {
   font-size: 12px;
   color: #ff0000;
   margin-top: 1rem;
-  line-height: 1.5;
-  letter-spacing: -0.2px;
 }
 
 .close-modal, .close-carousel {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: bold;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   align-self: flex-end;
+  line-height: 1;
 }
 
 /* ==========================================================================
@@ -333,7 +334,7 @@ h3 {
 .modal-carousel {
   position: relative;
   width: 100%;
-  padding: 0 40px;
+  padding: 0 45px;
   overflow: hidden;
   box-sizing: border-box;
 }
@@ -346,14 +347,14 @@ h3 {
 .carousel-item {
   min-width: 100%;
   box-sizing: border-box;
-  padding: 0 10px;
 }
 
 .carousel-item img {
   width: 100%;
   height: auto;
   object-fit: cover;
-  border-radius: 8px; 
+  border-radius: 6px; 
+  display: block;
 }
 
 .arrow {
@@ -361,99 +362,139 @@ h3 {
   top: 50%; 
   transform: translateY(-50%);
   color: black;
-  background: none;
+  background: rgba(255, 255, 255, 0.7); /* Adds slight contrast background behind arrows on touchscreens */
   border: none;
-  font-size: 2rem;
-  padding: 0.5rem; 
+  font-size: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
   z-index: 10; 
-  transition: opacity 0.3s ease;
 } 
 
-.arrow:hover {
-  opacity: 0.6;
-}
-
-.arrow.left { left: 10px; }
-.arrow.right { right: 10px; }
+.arrow.left { left: 5px; }
+.arrow.right { right: 5px; }
 
 /* ==========================================================================
    9. FOOTER & CONTACT
    ========================================================================== */
 footer {
-  bottom: 0;
-  left: 0;
-  margin: 0;
-  padding: 0;
-  width: 100vw;
-  height: 8vh;
+  width: 100%;
   background-color: rgba(0, 0, 0, 0);
-}
-
-.Contact {
-  display: inline;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-left: 1vw;
+  padding: 0 5vw;
+  box-sizing: border-box;
 }
 
 .contactP {
   font-family: 'SansSerifFLF-Demibold', var(--system-sans);
   font-size: 14px;
   line-height: 1.5;
-  margin-left: 5vw;
   letter-spacing: 0.3px;
 }
 
 .Credits {
   font-family: 'SansSerifBookFLF', var(--system-sans);
-  font-size: 14px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  margin-top: 15vh;
-  margin-bottom: 5vh;
-}
-
-.CreditsItemA {
-  text-align: left;
-  margin-left: 2vw;
-  margin-bottom: 1vh;
-}   
-
-.CreditsItemB {
-  text-align: right;
-  margin-right: 2vw;
-  margin-bottom: 1vh;
+  font-size: 13px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10vh;
+  margin-bottom: 4vh;
 }
 
 /* ==========================================================================
-   10. RESPONSIVE DESIGN (MEDIA QUERIES)
+   10. MEDIA QUERIES (TABLETS & SMARTPHONES)
    ========================================================================== */
+
+/* 📱 Tablets and Large Phones (Landscape/Portrait) */
 @media (max-width: 768px) {
-  .Work {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 2vw;
+  h1 {
+    font-size: 20px;
   }
 
-  .work-image {
-    max-width: 100%;
+  nav {
+    font-size: 13px;
+  }
+
+  .About {
+    grid-template-columns: 1fr; /* Stack about section text and picture on top of each other */
+    gap: 30px;
   }
   
+  h3 {
+    font-size: 22px;
+  }
+
+  .AboutPicture {
+    height: auto; /* Let picture heights find their true bounds naturally */
+    order: -1;    /* Places visual picture block BEFORE text for better layout context */
+  }
+
+  .Picture {
+    position: relative;
+    transform: none;
+    left: 0;
+    max-width: 100%;
+    width: 260px;
+    opacity: 1; /* Retains visible status permanently on screens that don't support hover maps */
+  }
+
+  .Work {
+    grid-template-columns: repeat(2, 1fr); /* 2 items per row */
+    gap: 3vw;
+  }
+  
+  .modal-content {
+    padding: 20px;
+    margin: 20px auto;
+  }
+
   .modal-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Force layout content details to chain sequentially downwards */
+    gap: 15px;
   }
 
   .modal-carousel {
-    padding: 0;
+    padding: 0; /* Remove padding offsets to maximize screen layout space */
+  }
+  
+  .arrow {
+    background: rgba(255, 255, 255, 0.9); /* Makes the touch navigation targets slightly more visible */
   }
 
   .modal-text {
-    max-height: 40vh;
+    max-height: 35vh; /* Drop height bounds so users don't break vertical views */
   }
 }
 
+/* 📱 Small Smartphones */
 @media (max-width: 480px) {
+  .Header {
+    padding: 0 4vw;
+  }
+
+  h1 {
+    font-size: 18px;
+  }
+
+  nav li {
+    margin-left: 5vw;
+  }
+
   .Work {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* Pure linear stream layout structure */
+    gap: 6vw;
+  }
+
+  .caption {
+    font-size: 14px;
+  }
+
+  .Credits {
+    flex-direction: column; /* Stack details vertically instead of side-by-side */
+    gap: 10px;
+    text-align: center;
   }
 }
